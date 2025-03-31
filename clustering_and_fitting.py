@@ -13,6 +13,8 @@ def plot_relational_plot(df):
     plt.figure(figsize=(8, 6))
     sns.scatterplot(data=df, x='Anxiety_Score', y='Depression_Score', hue='Stress_Level', palette='viridis')
     plt.title('Relational Plot: Anxiety vs Depression Score')
+    plt.savefig('relational_plot.png')
+
 
     plt.savefig('relational_plot.png')
     plt.close()
@@ -24,6 +26,8 @@ def plot_line_plot(df):
     plt.figure(figsize=(8, 6))
     sns.lineplot(data=df, x='Age', y='Anxiety_Score', hue='Gender', marker='o')
     plt.title('Line Plot: Anxiety Score by Age')
+    plt.savefig('line_plot.png')
+
 
     plt.savefig('line_plot.png')
     plt.close()
@@ -35,6 +39,8 @@ def plot_categorical_plot(df):
     plt.figure(figsize=(8, 6))
     sns.barplot(data=df, x='Employment_Status', y='Stress_Level', errorbar=None, palette='pastel')
     plt.title('Categorical Plot: Average Stress Level by Employment Status')
+    plt.xticks(rotation=45)
+
 
     plt.xticks(rotation=45)
     plt.savefig('categorical_plot.png')
@@ -49,6 +55,8 @@ def plot_pie_chart(df):
     plt.pie(data, labels=data.index, autopct='%1.1f%%', startangle=90, colors=sns.color_palette('pastel'))
     plt.title('Pie Chart: Employment Status Distribution')
     plt.savefig('pie_chart.png')
+
+    plt.savefig('pie_chart.png')
     plt.close()
 
 
@@ -60,6 +68,8 @@ def plot_statistical_plot(df):
     plt.figure(figsize=(10, 8))
     sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f')
     plt.title('Statistical Plot: Correlation Heatmap of Numeric Features')
+    plt.savefig('statistical_plot.png')
+
 
     plt.savefig('statistical_plot.png')
     plt.close()
@@ -71,6 +81,8 @@ def plot_additional_statistical_plots(df):
     plt.figure(figsize=(8, 6))
     sns.boxplot(data=df, x='Employment_Status', y='Depression_Score', palette='coolwarm')
     plt.title('Box Plot: Depression Score Distribution by Employment Status')
+    plt.xticks(rotation=45)
+
 
     plt.xticks(rotation=45)
     plt.savefig('box_plot.png')
@@ -79,6 +91,8 @@ def plot_additional_statistical_plots(df):
     plt.figure(figsize=(8, 6))
     sns.violinplot(data=df, x='Gender', y='Depression_Score', palette='viridis')
     plt.title('Violin Plot: Distribution of Depression Score by Gender')
+    plt.savefig('violin_plot.png')
+
 
     plt.savefig('violin_plot.png')
     plt.close()
@@ -105,8 +119,9 @@ def preprocessing(df):
 def writing(moments, col):
     """Prints the analysis of statistical moments for a given column."""
     print(f'For the attribute {col}:')
-    print(f'Mean = {moments[0]:.2f}, Standard Deviation = {moments[1]:.2f}, '
-          f'Skewness = {moments[2]:.2f}, and Excess Kurtosis = {moments[3]:.2f}.')
+    print(f'Mean = {moments[0]:.2f}, Standard Deviation = {moments[1]:.2f},')
+    print(f'Skewness = {moments[2]:.2f}, and Excess Kurtosis = {moments[3]:.2f}.')
+
     skew_desc = "not skewed" if abs(moments[2]) < 0.5 else ("right-skewed" if moments[2] > 0 else "left-skewed")
     kurtosis_desc = "mesokurtic" if abs(moments[3]) < 0.5 else ("leptokurtic" if moments[3] > 0 else "platykurtic")
     print(f'The data was {skew_desc} and {kurtosis_desc}.')
@@ -129,6 +144,8 @@ def perform_clustering(df, col1, col2):
     plt.plot(range(1, 10), distortions, marker='o')
     plt.title('Elbow Method')
     plt.xlabel('Number of Clusters')
+
+    plt.xlabel('Number of Clusters')
     plt.ylabel('Distortion')
     plt.savefig('elbow_plot.png')
     plt.close()
@@ -146,6 +163,8 @@ def plot_clustered_data(labels, data, centers):
     plt.scatter(data[:, 0], data[:, 1], c=labels, cmap='viridis', alpha=0.6)
     plt.scatter(centers[:, 0], centers[:, 1], s=200, c='red', label='Centroids')
     plt.title('Clustered Data')
+    plt.legend()
+
     plt.legend()
     plt.savefig('clustering.png')
     plt.close()
@@ -168,6 +187,8 @@ def plot_fitted_data(x, y, predictions):
     plt.scatter(x, y, label='Original Data', alpha=0.7)
     plt.plot(x, predictions, color='red', label='Regression Line')
     plt.title('Fitted Data')
+    plt.legend()
+
     plt.legend()
     plt.savefig('fitting.png')
     plt.close()
