@@ -137,7 +137,8 @@ def plot_clustered_data(labels, data, centers):
     """Plots clustered data with centroids."""
     plt.figure(figsize=(8, 6))
     plt.scatter(data[:, 0], data[:, 1], c=labels, cmap='viridis', alpha=0.6)
-    plt.scatter(centers[:, 0], centers[:, 1], s=200, c='red', label='Centroids')
+    plt.scatter(centers[:, 0], centers[:, 1], s=200, c='red',
+                 label='Centroids')
     plt.title('Clustered Data')
     plt.legend()
     plt.savefig('clustering.png')
@@ -178,7 +179,8 @@ def main():
     plot_statistical_plot(df)
     plot_categorical_plot(df)
     plot_pie_chart(df)
-    clustering_results = perform_clustering(df, 'Anxiety_Score', 'Depression_Score')
+    clustering_results = perform_clustering(df, 'Anxiety_Score',
+                                             'Depression_Score')
     plot_clustered_data(*clustering_results)
     x, y, predictions = perform_fitting(df, 'Sleep_Hours', 'Depression_Score')
     plot_fitted_data(x, y, predictions)
