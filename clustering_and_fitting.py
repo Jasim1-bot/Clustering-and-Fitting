@@ -11,11 +11,11 @@ from sklearn.linear_model import LinearRegression
 def plot_relational_plot(df):
     """Creates a scatterplot comparing Anxiety_Score and Depression_Score."""
     plt.figure(figsize=(8, 6))
-    sns.scatterplot(data=df, x='Anxiety_Score', y='Depression_Score', hue='Stress_Level', palette='viridis')
+    sns.scatterplot(
+        data=df, x='Anxiety_Score', y='Depression_Score',
+        hue='Stress_Level', palette='viridis'
+    )
     plt.title('Relational Plot: Anxiety vs Depression Score')
-    plt.savefig('relational_plot.png')
-
-
     plt.savefig('relational_plot.png')
     plt.close()
 
@@ -24,11 +24,10 @@ def plot_relational_plot(df):
 def plot_line_plot(df):
     """Creates a line plot showing Anxiety Score by Age."""
     plt.figure(figsize=(8, 6))
-    sns.lineplot(data=df, x='Age', y='Anxiety_Score', hue='Gender', marker='o')
+    sns.lineplot(
+        data=df, x='Age', y='Anxiety_Score', hue='Gender', marker='o'
+    )
     plt.title('Line Plot: Anxiety Score by Age')
-    plt.savefig('line_plot.png')
-
-
     plt.savefig('line_plot.png')
     plt.close()
 
@@ -37,11 +36,11 @@ def plot_line_plot(df):
 def plot_categorical_plot(df):
     """Creates a bar plot showing average Stress_Level by Employment_Status."""
     plt.figure(figsize=(8, 6))
-    sns.barplot(data=df, x='Employment_Status', y='Stress_Level', errorbar=None, palette='pastel')
+    sns.barplot(
+        data=df, x='Employment_Status', y='Stress_Level',
+        errorbar=None, palette='pastel'
+    )
     plt.title('Categorical Plot: Average Stress Level by Employment Status')
-    plt.xticks(rotation=45)
-
-
     plt.xticks(rotation=45)
     plt.savefig('categorical_plot.png')
     plt.close()
@@ -52,10 +51,11 @@ def plot_pie_chart(df):
     """Creates a pie chart showing distribution of Employment Status."""
     plt.figure(figsize=(8, 6))
     data = df['Employment_Status'].value_counts()
-    plt.pie(data, labels=data.index, autopct='%1.1f%%', startangle=90, colors=sns.color_palette('pastel'))
+    plt.pie(
+        data, labels=data.index, autopct='%1.1f%%',
+        startangle=90, colors=sns.color_palette('pastel')
+    )
     plt.title('Pie Chart: Employment Status Distribution')
-    plt.savefig('pie_chart.png')
-
     plt.savefig('pie_chart.png')
     plt.close()
 
@@ -69,61 +69,44 @@ def plot_statistical_plot(df):
     sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f')
     plt.title('Statistical Plot: Correlation Heatmap of Numeric Features')
     plt.savefig('statistical_plot.png')
-
-
-    plt.savefig('statistical_plot.png')
-    plt.close()
-
-
-# Additional Statistical Plots: Box and Violin Plots
-def plot_additional_statistical_plots(df):
-    """Creates additional statistical plots: Box Plot and Violin Plot."""
-    plt.figure(figsize=(8, 6))
-    sns.boxplot(data=df, x='Employment_Status', y='Depression_Score', palette='coolwarm')
-    plt.title('Box Plot: Depression Score Distribution by Employment Status')
-    plt.xticks(rotation=45)
-
-
-    plt.xticks(rotation=45)
-    plt.savefig('box_plot.png')
-    plt.close()
-
-    plt.figure(figsize=(8, 6))
-    sns.violinplot(data=df, x='Gender', y='Depression_Score', palette='viridis')
-    plt.title('Violin Plot: Distribution of Depression Score by Gender')
-    plt.savefig('violin_plot.png')
-
-
-    plt.savefig('violin_plot.png')
     plt.close()
 
 
 # Statistical Analysis
 def statistical_analysis(df, col: str):
     """Calculates the four main statistical moments."""
-    mean = df[col].mean()
-    stddev = df[col].std()
-    skew = df[col].skew()
-    excess_kurtosis = df[col].kurt()
-    return mean, stddev, skew, excess_kurtosis
+    return (
+        df[col].mean(),
+        df[col].std(),
+        df[col].skew(),
+        df[col].kurt()
+    )
 
 
 # Preprocessing
 def preprocessing(df):
     """Preprocesses the data by handling missing values."""
-    df = df.dropna()  # Drop rows with missing values
-    return df
+    return df.dropna()
 
 
 # Writing Statistical Moments
 def writing(moments, col):
     """Prints the analysis of statistical moments for a given column."""
     print(f'For the attribute {col}:')
-    print(f'Mean = {moments[0]:.2f}, Standard Deviation = {moments[1]:.2f},')
-    print(f'Skewness = {moments[2]:.2f}, and Excess Kurtosis = {moments[3]:.2f}.')
-
-    skew_desc = "not skewed" if abs(moments[2]) < 0.5 else ("right-skewed" if moments[2] > 0 else "left-skewed")
-    kurtosis_desc = "mesokurtic" if abs(moments[3]) < 0.5 else ("leptokurtic" if moments[3] > 0 else "platykurtic")
+    print(
+        f'Mean = {moments[0]:.2f}, Standard Deviation = {moments[1]:.2f}, '
+        f'Skewness = {moments[2]:.2f}, Excess Kurtosis = {moments[3]:.2f}.'
+    )
+    skew_desc = (
+        "not skewed" if abs(moments[2]) < 0.5
+        else "right-skewed" if moments[2] > 0
+        else "left-skewed"
+    )
+    kurtosis_desc = (
+        "mesokurtic" if abs(moments[3]) < 0.5
+        else "leptokurtic" if moments[3] > 0
+        else "platykurtic"
+    )
     print(f'The data was {skew_desc} and {kurtosis_desc}.')
 
 
@@ -133,38 +116,29 @@ def perform_clustering(df, col1, col2):
     data = df[[col1, col2]].values
     scaler = StandardScaler()
     scaled_data = scaler.fit_transform(data)
-
-    distortions = []
-    for k in range(1, 10):
-        kmeans = KMeans(n_clusters=k, random_state=42)
-        kmeans.fit(scaled_data)
-        distortions.append(kmeans.inertia_)
-
+    distortions = [
+        KMeans(n_clusters=k, random_state=42).fit(scaled_data).inertia_
+        for k in range(1, 10)
+    ]
     plt.figure(figsize=(8, 6))
     plt.plot(range(1, 10), distortions, marker='o')
     plt.title('Elbow Method')
     plt.xlabel('Number of Clusters')
-
-    plt.xlabel('Number of Clusters')
     plt.ylabel('Distortion')
     plt.savefig('elbow_plot.png')
     plt.close()
-
     kmeans = KMeans(n_clusters=3, random_state=42)
     labels = kmeans.fit_predict(scaled_data)
-    centers = kmeans.cluster_centers_
-
-    return labels, scaled_data, centers
+    return labels, scaled_data, kmeans.cluster_centers_
 
 
+# Clustering Plot
 def plot_clustered_data(labels, data, centers):
     """Plots clustered data with centroids."""
     plt.figure(figsize=(8, 6))
     plt.scatter(data[:, 0], data[:, 1], c=labels, cmap='viridis', alpha=0.6)
     plt.scatter(centers[:, 0], centers[:, 1], s=200, c='red', label='Centroids')
     plt.title('Clustered Data')
-    plt.legend()
-
     plt.legend()
     plt.savefig('clustering.png')
     plt.close()
@@ -177,10 +151,10 @@ def perform_fitting(df, col1, col2):
     y = df[col2].values
     model = LinearRegression()
     model.fit(x, y)
-    predictions = model.predict(x)
-    return x, y, predictions
+    return x, y, model.predict(x)
 
 
+# Linear Regression Plot
 def plot_fitted_data(x, y, predictions):
     """Plots original data and the regression line."""
     plt.figure(figsize=(8, 6))
@@ -188,32 +162,24 @@ def plot_fitted_data(x, y, predictions):
     plt.plot(x, predictions, color='red', label='Regression Line')
     plt.title('Fitted Data')
     plt.legend()
-
-    plt.legend()
     plt.savefig('fitting.png')
     plt.close()
 
 
 # Main Function
 def main():
-    # Use your dataset path here
     df = pd.read_csv('data.csv')
     df = preprocessing(df)
-
     col = 'Depression_Score'
     moments = statistical_analysis(df, col)
     writing(moments, col)
-
     plot_relational_plot(df)
     plot_line_plot(df)
     plot_statistical_plot(df)
-    plot_additional_statistical_plots(df)
     plot_categorical_plot(df)
     plot_pie_chart(df)
-
     clustering_results = perform_clustering(df, 'Anxiety_Score', 'Depression_Score')
     plot_clustered_data(*clustering_results)
-
     x, y, predictions = perform_fitting(df, 'Sleep_Hours', 'Depression_Score')
     plot_fitted_data(x, y, predictions)
 
